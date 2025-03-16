@@ -15,7 +15,7 @@ export async function clientLoader() {
   return { contacts };
 }
 
-export default function App({ loaderData }) {
+export default function App({ loaderData }: Route.ComponentProps) {
   const { contacts } = loaderData;
   return (
     <>
@@ -59,14 +59,6 @@ export default function App({ loaderData }) {
               <i>No contacts</i>
             </p>
           )}
-          {/* <ul>
-            <li>
-              <Link to={`/contacts/1`}>Your Name</Link>
-            </li>
-            <li>
-              <Link to={`/contacts/2`}>Your Friend</Link>
-            </li>
-          </ul> */}
         </nav>
       </div>
       <div id="detail">
@@ -124,5 +116,14 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         </pre>
       )}
     </main>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <div id="loading-splash">
+      <div id="loading-splash-spinner" />
+      <p>Loading, please wait...</p>
+    </div>
   );
 }
