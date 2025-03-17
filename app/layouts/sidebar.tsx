@@ -21,6 +21,10 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
   const { contacts, q } = loaderData;
   const navigation = useNavigation();
   const submit = useSubmit();
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has("q");
+
   useEffect(() => {
     const searchField = document.getElementById("q");
     if (searchField instanceof HTMLInputElement) {
@@ -42,13 +46,14 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
           >
             <input
               aria-label="Search contacts"
+              className={searching ? "loading" : ""}
               id="q"
               name="q"
               placeholder="Search"
               type="search"
               value={q || ""}
             />
-            <div aria-hidden hidden={true} id="search-spinner" />
+            <div aria-hidden hidden={!searching} id="search-spinner" />
           </Form>
           <Form method="post">
             <button type="submit">New</button>
@@ -85,7 +90,9 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
         </nav>
       </div>
       <div
-        className={navigation.state === "loading" ? "loading" : ""}
+        className={
+          navigation.state === "loading" && !searching ? "loading" : ""
+        }
         id="detail"
       >
         <Outlet />
